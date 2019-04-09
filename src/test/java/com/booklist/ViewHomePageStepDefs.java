@@ -20,8 +20,9 @@ public class ViewHomePageStepDefs implements En {
             }
         });
 
-        String expectedHtml = "<a href=\'http://localhost:2333/read\'>Read Books</a>\n" +
-                "<a href=\'http://localhost:2333/unread\'>Unread Books</a>\n";
+        String expectedHtml = "{\"readList\":[]," +
+                "\"unreadList\":[]}";
+
         Then("^that user is redirected to their read list page$", () -> {
             assertEquals(expectedHtml, response);
         });
