@@ -17,6 +17,9 @@ allprojects {
         testCompile 'org.assertj:assertj-core:3.8.0'
         testCompile 'io.cucumber:cucumber-java8:4.2.0'
         testCompile 'io.cucumber:cucumber-junit:4.2.0'
+        // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+        compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+
     }
     test { finalizedBy jacocoTestReport }
 }
@@ -40,11 +43,6 @@ configurations {
     }
 }
 
-task killJetty(type:Exec) {
-    executable "pkill"
-    args "-lf","booklist.*jetty"
-}
-
 task cucumber() {
     dependsOn assemble, compileTestJava
     doFirst {
@@ -54,5 +52,4 @@ task cucumber() {
             args = ['--plugin', 'pretty', '--glue', 'com.booklist', 'src/test/resources']
         }
     }
-    finalizedBy killJetty
 }
