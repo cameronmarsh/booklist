@@ -20,11 +20,10 @@ public class ViewHomePageStepDefs implements En {
             }
         });
 
-        String expectedHtml = "{\"readList\":[]," +
-                "\"unreadList\":[]}";
+        String expectedResponse = "{\"greeting\":\"Welcome to your Booklist, Boromir\"}";
 
         Then("^that user is redirected to their read list page$", () -> {
-            assertEquals(expectedHtml, response);
+            assertEquals(expectedResponse, response);
         });
     }
 }
