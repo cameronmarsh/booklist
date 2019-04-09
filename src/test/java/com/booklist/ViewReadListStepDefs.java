@@ -14,7 +14,7 @@ public class ViewReadListStepDefs implements En {
 
         });
         When("^I request the read list$", () -> {
-            try(Scanner scanner = new Scanner(new java.net.URL("http://localhost:2345/read").openStream()).useDelimiter("\\A")) {
+            try(Scanner scanner = new Scanner(new java.net.URL("http://localhost:2333/read").openStream()).useDelimiter("\\A")) {
                 response = scanner.hasNext() ? scanner.next() : "";
             }
         });

@@ -3,25 +3,23 @@ import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-plugins {
-    id 'java'
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        compile 'com.sparkjava:spark-core:2.3'
+        compile 'com.fasterxml.jackson.jr:jackson-jr-all:2.9.0'
+        testCompile 'junit:junit:4.12'
+        testCompile 'org.assertj:assertj-core:3.8.0'
+        testCompile 'io.cucumber:cucumber-java8:4.2.0'
+        testCompile 'io.cucumber:cucumber-junit:4.2.0'
+    }
+    test { finalizedBy jacocoTestReport }
 }
-
-group 'booklist'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testImplementation 'io.cucumber:cucumber-java8:4.2.6'
-    testCompile 'io.cucumber:cucumber-junit:4.2.0'
-}
-
 
 class RunAsyncTask extends DefaultTask {
     @TaskAction

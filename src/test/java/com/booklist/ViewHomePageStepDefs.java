@@ -13,7 +13,7 @@ public class ViewHomePageStepDefs implements En {
     public ViewHomePageStepDefs() {
         Given("the booklist server is running^", () -> {});
         When("^a user requests the site", () -> {
-            try(Scanner scanner = new Scanner(new java.net.URL("https://localhost:2345/").openStream()).useDelimiter("\\A")) {
+            try(Scanner scanner = new Scanner(new java.net.URL("https://localhost:2333/").openStream()).useDelimiter("\\A")) {
                 response = scanner.hasNext() ? scanner.next() : "";
             }
         });
