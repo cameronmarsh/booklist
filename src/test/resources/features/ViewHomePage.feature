@@ -2,7 +2,7 @@
 # Tags: optional
     
 Feature: View home page
-    As a user, I want to navigate to the book list application site
+    As a potential user, I want to navigate to the book list application site
     
 Scenario: Navigating to site
     Given the booklist server is running
