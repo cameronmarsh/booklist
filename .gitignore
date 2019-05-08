@@ -15,6 +15,9 @@
 
 # Generated files
 .idea/**/contentModel.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/vcs.xml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -128,4 +131,6 @@ gradle-app.setting
 ### Gradle Patch ###
 **/build/
 
+.DS_Store
 # End of https://www.gitignore.io/api/java,gradle,intellij
+
