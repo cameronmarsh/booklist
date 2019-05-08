@@ -10,7 +10,7 @@ public class BooklistServer {
         port(2333);
         get("/", (req, res) -> {
             JSONObject json = new JSONObject();
-            json.put("greeting", "Welcome to Booklist!");
+            json.put("response", "Welcome to Booklist!");
 
             return json.toJSONString();
         });
