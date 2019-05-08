@@ -1,6 +1,7 @@
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -14,13 +15,5 @@ public class BooklistServer {
             return json.toJSONString();
         });
 
-        get("/user", (req, res) -> {
-            String name = req.queryParams("name");
-
-            JSONObject json = new JSONObject();
-            json.put("greeting", String.format("Welcome to Booklist, %s!", name));
-
-            return json.toJSONString();
-        });
     }
 }
