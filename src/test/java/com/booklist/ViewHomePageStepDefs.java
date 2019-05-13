@@ -21,7 +21,7 @@ public class ViewHomePageStepDefs implements En {
             }
         });
 
-        String expectedResponse = "{\"greeting\":\"Welcome to Booklist!\"}";
+        String expectedResponse = "{\"response\":\"Welcome to Booklist!\"}";
 
         Then("^that user is redirected to their read list page$", () -> {
             assertEquals(expectedResponse, response);

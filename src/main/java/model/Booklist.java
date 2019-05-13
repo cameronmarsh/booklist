@@ -1,3 +1,5 @@
+package model;
+
 public class Booklist {
     private String username;
 

@@ -15,5 +15,9 @@ public class BooklistServer {
             return json.toJSONString();
         });
 
+        get("/titles", (req, res) -> {
+            return "{\"response\": []}";
+        });
+
     }
 }
