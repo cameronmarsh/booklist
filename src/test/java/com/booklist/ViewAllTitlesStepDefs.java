@@ -20,8 +20,9 @@ public class ViewAllTitlesStepDefs implements En {
             }
         });
 
+        String expectedResponse = "{\"response\": [\"In Search of Lost Time\", \"Walden\", \"The Count of Monte Cristo\", \"The Sound and the Fury\", \"My Struggle\"]}";
         Then("^a list of all books saved is returned$", () -> {
-            assertEquals("{\"response\": []}", response);
+            assertEquals(expectedResponse, response);
         });
     }
 }

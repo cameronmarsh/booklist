@@ -1,4 +1,5 @@
 import org.json.simple.JSONObject;
+import util.MySqlConnector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,7 @@ public class BooklistServer {
             return json.toJSONString();
         });
 
-        get("/titles", (req, res) -> {
-            return "{\"response\": []}";
-        });
+        get("/titles", (req, res) -> MySqlConnector.execute("blah"));
 
     }
 }
