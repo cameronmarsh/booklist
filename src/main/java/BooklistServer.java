@@ -16,7 +16,7 @@ public class BooklistServer {
             return json.toJSONString();
         });
 
-        get("/titles", (req, res) -> MySqlConnector.execute("blah"));
+        get("/titles", (req, res) -> MySqlConnector.execute("select title"));
 
     }
 }

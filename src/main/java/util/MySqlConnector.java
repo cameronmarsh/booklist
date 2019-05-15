@@ -1,6 +1,7 @@
 package util;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class MySqlConnector {
     static final String URL = "jdbc:mysql://localhost/test?serverTimezone=EST";
@@ -9,7 +10,6 @@ public class MySqlConnector {
 
     public static String execute(String query){
         Connection conn;
-        StringBuilder result = new StringBuilder();
         try {
             //Register JDBC Driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -19,13 +19,11 @@ public class MySqlConnector {
 
             //execute query
             Statement statement = conn.createStatement();
-            String req = "select title from test";
-            ResultSet res = statement.executeQuery(req);
+            String req = query + " from test;";
+            ResultSet res = statement.executeQuery("use books;" + req);
 
             //extract data from result set
-            while(res.next()){
-                //TODO: add result to string builder
-            }
+            System.out.println(res.getClass());
 
             statement.close();
             conn.close();
@@ -37,6 +35,6 @@ public class MySqlConnector {
             e.printStackTrace();
         }
 
-        return result.toString();
+        return null;
     }
 }
