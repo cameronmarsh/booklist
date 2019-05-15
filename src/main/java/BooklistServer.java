@@ -8,7 +8,7 @@ import static spark.Spark.*;
 
 public class BooklistServer {
     public static void main(String[] args) {
-        port(2333);
+        port(8769);
         get("/", (req, res) -> {
             JSONObject json = new JSONObject();
             json.put("response", "Welcome to Booklist!");
@@ -16,7 +16,9 @@ public class BooklistServer {
             return json.toJSONString();
         });
 
-        get("/titles", (req, res) -> MySqlConnector.execute("select title"));
+        get("/titles", (req, res) -> {
+            return MySqlConnector.execute("select title");
+        });
 
     }
 }
