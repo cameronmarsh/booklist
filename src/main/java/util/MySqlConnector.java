@@ -1,5 +1,7 @@
 package util;
 
+import model.Book;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,12 +9,12 @@ import java.util.List;
 
 public class MySqlConnector {
     static final String URL = "jdbc:mysql://localhost/books?serverTimezone=EST";
-    static final String USER = "root";
+    static final String USER = "reader";
     static final String PASSWORD = "mysqlsux";
 
-    public static List<String> execute(String query){
+    public static String execute(){
         Connection conn;
-        ArrayList<String> results = new ArrayList<>();
+        ArrayList<Book> results = new ArrayList<>();
         try {
             //Register JDBC Driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -22,12 +24,17 @@ public class MySqlConnector {
 
             //execute query
             Statement statement = conn.createStatement();
-            String req = query + " from test;";
-            ResultSet res = statement.executeQuery(req);
+            ResultSet res = statement.executeQuery("select * from test;");
 
             //extract data from result set
             while(res.next()){
-                results.add(res.getString("title"));
+                Book book = new Book();
+                book.setTitle(res.getString("title"));
+                book.setAuthor(res.getString("author"));
+                book.setPublished(res.getDate("published"));
+//                book.setRead(res.getBoolean("read"));
+
+                results.add(book);
             }
 
             statement.close();
@@ -40,6 +47,6 @@ public class MySqlConnector {
             e.printStackTrace();
         }
 
-        return results;
+        return "";
     }
 }

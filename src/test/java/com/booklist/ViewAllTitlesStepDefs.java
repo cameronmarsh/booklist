@@ -15,7 +15,7 @@ public class ViewAllTitlesStepDefs implements En {
         });
 
         When("^a user requests the endpoint to see all titles$", () -> {
-            try(Scanner scanner = new Scanner(new java.net.URL("http://localhost:2333/titles").openStream()).useDelimiter("\\A")){
+            try(Scanner scanner = new Scanner(new java.net.URL("http://localhost:8769/titles").openStream()).useDelimiter("\\A")){
                 response = scanner.hasNext() ? scanner.next() : "";
             }
         });

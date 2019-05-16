@@ -16,7 +16,7 @@ public class ViewHomePageStepDefs implements En {
         });
 
         When("^a user requests the site$", () -> {
-            try(Scanner scanner = new Scanner(new java.net.URL("http://localhost:2333/").openStream()).useDelimiter("\\A")) {
+            try(Scanner scanner = new Scanner(new java.net.URL("http://localhost:8769/").openStream()).useDelimiter("\\A")) {
                 response = scanner.hasNext() ? scanner.next() : "";
             }
         });

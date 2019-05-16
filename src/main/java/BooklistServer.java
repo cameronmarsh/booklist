@@ -17,7 +17,7 @@ public class BooklistServer {
         });
 
         get("/titles", (req, res) -> {
-            return MySqlConnector.execute("select title");
+            return MySqlConnector.execute();
         });
 
     }
