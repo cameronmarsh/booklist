@@ -1,6 +1,8 @@
 package util;
 
 import model.Book;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,6 +49,18 @@ public class MySqlConnector {
             e.printStackTrace();
         }
 
-        return "";
+        return getJsonResponse(results);
+    }
+
+
+    private static String getJsonResponse(List<Book> results){
+        JSONArray books = new JSONArray();
+        for(Book book : results){
+            books.add(book.asJson());
+        }
+
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("response", books);
+        return jsonResponse.toJSONString();
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import org.json.simple.JSONObject;
+
 import java.util.Date;
 
 public class Book {
@@ -38,5 +40,15 @@ public class Book {
 
     public boolean isRead() {
         return read;
+    }
+
+    public JSONObject asJson(){
+        JSONObject bookJson = new JSONObject();
+        bookJson.put("title", this.title);
+        bookJson.put("author", this.author);
+        bookJson.put("published", this.published.toString());
+        bookJson.put("read", this.read);
+
+        return bookJson;
     }
 }

@@ -20,7 +20,7 @@ public class ViewAllTitlesStepDefs implements En {
             }
         });
 
-        String expectedResponse = "{\"response\": [\"In Search of Lost Time\", \"Walden\", \"The Count of Monte Cristo\", \"The Sound and the Fury\", \"My Struggle\"]}";
+        String expectedResponse = "{\"response\":[{\"read\":false,\"author\":\"Henry David Thoreau\",\"published\":\"1854-08-09\",\"title\":\"Walden\"},{\"read\":false,\"author\":\"William Faulkner\",\"published\":\"1929-04-21\",\"title\":\"The Sound and the Fury\"},{\"read\":false,\"author\":\"Karl Ove Knausgaard\",\"published\":\"2009-01-01\",\"title\":\"My Struggle\"},{\"read\":false,\"author\":\"Marcel Proust\",\"published\":\"1913-01-01\",\"title\":\"In Search of Lost Time\"},{\"read\":false,\"author\":\"Alexandre Dumas\",\"published\":\"1844-08-24\",\"title\":\"The Count of Monte Cristo\"}]}";
         Then("^a list of all books saved is returned$", () -> {
             assertEquals(expectedResponse, response);
         });
