@@ -20,7 +20,7 @@ allprojects {
         // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
         compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.13'
+        compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
 
     }
     test { finalizedBy jacocoTestReport }
@@ -47,7 +47,7 @@ configurations {
 
 task cucumber() {
     dependsOn assemble, compileTestJava
-    doFirst {
+    doLast {
         javaexec {
             main = "cucumber.api.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
