@@ -10,8 +10,5 @@ jdk:
 services:
   - mysql
 
-before_install:
-  - mysql -u travis --password="" < travis.sql
-
 script:
   - ./gradlew cucumber
