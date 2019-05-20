@@ -9,6 +9,3 @@ jdk:
 
 services:
   - mysql
-
-script:
-  - ./gradlew cucumber
