@@ -10,6 +10,7 @@ allprojects {
     repositories {
         jcenter()
     }
+
     dependencies {
         compile 'com.sparkjava:spark-core:2.3'
         compile 'com.fasterxml.jackson.jr:jackson-jr-all:2.9.0'
@@ -17,10 +18,13 @@ allprojects {
         testCompile 'org.assertj:assertj-core:3.8.0'
         testCompile 'io.cucumber:cucumber-java8:4.2.0'
         testCompile 'io.cucumber:cucumber-junit:4.2.0'
+        // https://mvnrepository.com/artifact/org.dbunit/dbunit
+        testCompile group: 'org.dbunit', name: 'dbunit', version: '2.4.3'
         // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
         compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
         compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
+
 
     }
     test { finalizedBy jacocoTestReport }
@@ -39,8 +43,27 @@ class RunAsyncTask extends DefaultTask {
     }
 }
 
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir('src/integration-test/java')
+        }
+        resources.srcDir('src/integration-test/resources')
+    }
+}
+
 configurations {
     cucumberRuntime {
+        extendsFrom testRuntime
+    }
+
+    integrationTestCompile{
+        extendsFrom testCompile
+    }
+
+    integrationTestRuntime{
         extendsFrom testRuntime
     }
 }
@@ -55,3 +78,14 @@ task cucumber() {
         }
     }
 }
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen{false}
+
+}
+
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
