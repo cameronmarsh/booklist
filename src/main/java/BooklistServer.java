@@ -1,13 +1,13 @@
 import org.json.simple.JSONObject;
 import util.MySqlConnector;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static spark.Spark.*;
 
 public class BooklistServer {
     public static void main(String[] args) {
+        MySqlConnector connector = new MySqlConnector();
+        connector.setTable("test");
+
         port(8769);
         get("/", (req, res) -> {
             JSONObject json = new JSONObject();
@@ -17,7 +17,7 @@ public class BooklistServer {
         });
 
         get("/titles", (req, res) -> {
-            return MySqlConnector.execute();
+            return connector.select("");
         });
 
     }
