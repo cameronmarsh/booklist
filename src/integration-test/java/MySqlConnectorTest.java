@@ -30,6 +30,7 @@ public class MySqlConnectorTest {
     }
 
     @Test
+    @Ignore
     public void returnsNullWhenTableNameIsNotSpecified() throws SQLException, ClassNotFoundException {
         MySqlConnector connector = new MySqlConnector();
         //don't set table name to anything --> stays null
