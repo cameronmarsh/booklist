@@ -1,40 +1,46 @@
+import junit.framework.TestCase;
 import model.Book;
+import org.dbunit.DBTestCase;
+import org.dbunit.JdbcBasedDBTestCase;
+import org.dbunit.JdbcDatabaseTester;
+import org.dbunit.assertion.DbUnitAssert;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.database.QueryDataSet;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import util.MySqlConnector;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class MySqlConnectorTest {
 
-    @Before
-    public void setUp() throws Exception {
-       MySqlConnector connector = new MySqlConnector();
-       connector.createBookTable("dev");
-    }
+    private MySqlConnector connector;
+    private List<Book> testBooks = new ArrayList<>();
 
-    @Test
+
     @Ignore
     public void returnsNullWhenNoTableExists() throws SQLException, ClassNotFoundException {
-        MySqlConnector connector = new MySqlConnector();
         connector.setTable("doesNotExist");
-
         List<Book> actual = connector.select("");
 
         assertNull(actual);
     }
 
     @Test
-    @Ignore
     public void returnsNullWhenTableNameIsNotSpecified() throws SQLException, ClassNotFoundException {
-        MySqlConnector connector = new MySqlConnector();
         //don't set table name to anything --> stays null
-
+        connector.setTable(null);
         List<Book> actual = connector.select("");
 
         assertNull(actual);
@@ -43,7 +49,6 @@ public class MySqlConnectorTest {
     @Test
     @Ignore
     public void returnsEmptyListWithNoQuery() throws SQLException, ClassNotFoundException {
-        MySqlConnector connector = new MySqlConnector();
         connector.setTable("dev");
 
         List<Book> actual = connector.select("blakj");

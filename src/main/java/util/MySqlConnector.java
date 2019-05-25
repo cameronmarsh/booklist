@@ -22,6 +22,10 @@ public class MySqlConnector {
         this.table = table;
     }
 
+    public static String getConnectionURL() {
+        return URL;
+    }
+
     private Connection getConnection() throws SQLException, ClassNotFoundException {
         //Register JDBC Driver
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -30,15 +34,25 @@ public class MySqlConnector {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    private ResultSet query(String query) throws SQLException, ClassNotFoundException {
+    private List<Book> query(String query) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
         Statement statement = connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(query);
+        List<Book> bookResults = new ArrayList<>();
+
+        while(resultSet.next()){
+            Book bookResult = new Book();
+            bookResult.setTitle(resultSet.getString("title"));
+            bookResult.setAuthor(resultSet.getString("author"));
+            bookResult.setPublished(resultSet.getString("published"));
+            bookResults.add(bookResult);
+        }
+
         statement.close();
         connection.close();
 
-        return resultSet;
+        return bookResults;
     }
 
 
@@ -60,20 +74,7 @@ public class MySqlConnector {
             return null;
 
         ArrayList<Book> results = new ArrayList<>();
-        ResultSet res = query("select " + selection + " from " + this.table + ";");
-
-        //extract data from result set
-        while (res.next()) {
-            Book book = new Book();
-            book.setTitle(res.getString("title"));
-            book.setAuthor(res.getString("author"));
-            book.setPublished(res.getDate("published"));
-            book.setRead(res.getBoolean("read"));
-
-            results.add(book);
-        }
-
-        return results;
+        return query("select " + selection + " from " + this.table + ";");
     }
 
 
@@ -102,5 +103,15 @@ public class MySqlConnector {
                 "PRIMARY KEY (title))";
 
         update(sqlQuery);
+    }
+
+    public void removeBookTable(String tableName) throws SQLException, ClassNotFoundException {
+        update("DROP table " + tableName + ";");
+    }
+
+    public void addBook(String title, String author, String datePublished, boolean read) throws SQLException, ClassNotFoundException {
+        update("INSERT INTO " + this.table + "(title, author, published)" + //, read)" +
+                " VALUES (\"" + title + "\",\"" + author + "\",\"" + datePublished + "\")"); //+ "," + read + ")");
+        //TODO: add read bool to table
     }
 }

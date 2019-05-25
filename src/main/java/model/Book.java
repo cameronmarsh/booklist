@@ -2,13 +2,25 @@ package model;
 
 import org.json.simple.JSONObject;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Book {
     private String title;
     private String author;
-    private Date published;
+    private String published;
     private boolean read;
+
+
+    public Book(String title, String author, String datePublished, boolean read) {
+        this.title = title;
+        this.author = author;
+        this.published = datePublished;
+        this.read = read;
+    }
+
+    public Book() {
+
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -18,7 +30,7 @@ public class Book {
         this.author = author;
     }
 
-    public void setPublished(Date published) {
+    public void setPublished(String published) {
         this.published = published;
     }
 
@@ -34,8 +46,8 @@ public class Book {
         return author;
     }
 
-    public Date getPublished() {
-        return published;
+    public String getPublished() {
+        return this.published;
     }
 
     public boolean isRead() {
