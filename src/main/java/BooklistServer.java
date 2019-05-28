@@ -16,8 +16,8 @@ public class BooklistServer {
             return json.toJSONString();
         });
 
-        get("/titles", (req, res) -> {
-            return connector.select("");
+        get("/books", (req, res) -> {
+            return connector.getAllBooks();
         });
 
     }

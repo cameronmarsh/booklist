@@ -1,8 +1,9 @@
 package util;
 
 import model.Book;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class MySqlConnector {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    private List<Book> query(String query) throws SQLException, ClassNotFoundException {
+    private JSONObject query(String query) throws SQLException, ClassNotFoundException, JSONException {
         Connection connection = getConnection();
         Statement statement = connection.createStatement();
 
@@ -52,7 +53,20 @@ public class MySqlConnector {
         statement.close();
         connection.close();
 
-        return bookResults;
+        return toJsonResponse(bookResults);
+    }
+
+    private JSONObject toJsonResponse(List<Book> bookResults) throws JSONException {
+        JSONObject response = new JSONObject();
+        JSONArray results = new JSONArray();
+
+        for(Book book : bookResults){
+            results.put(book.asJson());
+        }
+
+        response.put("response", results);
+
+        return response;
     }
 
 
@@ -69,24 +83,23 @@ public class MySqlConnector {
     }
 
 
-    public List<Book> select(String selection) throws SQLException, ClassNotFoundException {
+    private JSONObject select(String selection) throws SQLException, ClassNotFoundException, JSONException {
         if (this.table == null)
             return null;
 
-        ArrayList<Book> results = new ArrayList<>();
         return query("select " + selection + " from " + this.table + ";");
     }
 
 
-    private static String getJsonResponse(List<Book> results) {
+    private static String getJsonResponse(List<Book> results) throws JSONException {
         JSONArray books = new JSONArray();
         for (Book book : results) {
-            books.add(book.asJson());
+            books.put(book.asJson());
         }
 
         JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("response", books);
-        return jsonResponse.toJSONString();
+        return jsonResponse.toString();
     }
 
     public void setTable(String tableName) {
@@ -113,5 +126,23 @@ public class MySqlConnector {
         update("INSERT INTO " + this.table + "(title, author, published)" + //, read)" +
                 " VALUES (\"" + title + "\",\"" + author + "\",\"" + datePublished + "\")"); //+ "," + read + ")");
         //TODO: add read bool to table
+    }
+
+    public List<String> getTables() throws SQLException, ClassNotFoundException {
+        Connection conn = getConnection();
+        Statement statement = conn.createStatement();
+        List<String> tables = new ArrayList<>();
+
+        ResultSet resultSet = statement.executeQuery("show tables;");
+        while(resultSet.next()){
+            tables.add(resultSet.getString(1));
+        }
+
+        return tables;
+
+    }
+
+    public JSONObject getAllBooks() throws SQLException, ClassNotFoundException, JSONException {
+        return select("*");
     }
 }

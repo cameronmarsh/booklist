@@ -24,6 +24,8 @@ allprojects {
         compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
         compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
+        // https://mvnrepository.com/artifact/org.skyscreamer/jsonassert
+        testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
 
 
     }
