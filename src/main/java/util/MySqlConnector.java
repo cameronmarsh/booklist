@@ -1,6 +1,9 @@
 package util;
 
 import model.Book;
+import model.BookParser;
+import model.Parser;
+import model.SingleColumnParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,46 +38,29 @@ public class MySqlConnector {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    private JSONObject query(String query) throws SQLException, ClassNotFoundException, JSONException {
+    private JSONObject query(String query, Parser parser) throws SQLException, ClassNotFoundException, JSONException {
         Connection connection = getConnection();
         Statement statement = connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(query);
-        List<Book> bookResults = new ArrayList<>();
-
-        while(resultSet.next()){
-            Book bookResult = new Book();
-            bookResult.setTitle(resultSet.getString("title"));
-            bookResult.setAuthor(resultSet.getString("author"));
-            bookResult.setPublished(resultSet.getString("published"));
-            bookResults.add(bookResult);
-        }
+        JSONObject results = parser.parse(resultSet);
 
         statement.close();
         connection.close();
 
-        return toJsonResponse(bookResults);
-    }
-
-    private JSONObject toJsonResponse(List<Book> bookResults) throws JSONException {
-        JSONObject response = new JSONObject();
-        JSONArray results = new JSONArray();
-
-        for(Book book : bookResults){
-            results.put(book.asJson());
-        }
-
-        response.put("response", results);
-
-        return response;
+        return results;
     }
 
 
-    public int update(String statment) throws SQLException, ClassNotFoundException {
+
+
+
+
+    public int update(String query) throws SQLException, ClassNotFoundException {
         Connection connection = getConnection();
         Statement statement = connection.createStatement();
 
-        int result = statement.executeUpdate(statment);
+        int result = statement.executeUpdate(query);
 
         statement.close();
         connection.close();
@@ -83,11 +69,11 @@ public class MySqlConnector {
     }
 
 
-    private JSONObject select(String selection) throws SQLException, ClassNotFoundException, JSONException {
+    private JSONObject select(String selection, Parser parser) throws SQLException, ClassNotFoundException, JSONException {
         if (this.table == null)
             return null;
 
-        return query("select " + selection + " from " + this.table + ";");
+        return query("select " + selection + " from " + this.table + ";", parser);
     }
 
 
@@ -128,6 +114,7 @@ public class MySqlConnector {
         //TODO: add read bool to table
     }
 
+    //TODO: refactor
     public List<String> getTables() throws SQLException, ClassNotFoundException {
         Connection conn = getConnection();
         Statement statement = conn.createStatement();
@@ -143,6 +130,10 @@ public class MySqlConnector {
     }
 
     public JSONObject getAllBooks() throws SQLException, ClassNotFoundException, JSONException {
-        return select("*");
+        return select("*", new BookParser());
+    }
+
+    public JSONObject getTitles() throws SQLException, JSONException, ClassNotFoundException {
+        return select("title", new SingleColumnParser("title"));
     }
 }

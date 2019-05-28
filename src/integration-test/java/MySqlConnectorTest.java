@@ -100,4 +100,18 @@ public class MySqlConnectorTest {
 
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
     }
+
+    @Test
+    public void canQuerySingleFieldFromDatabase() throws JSONException, SQLException, ClassNotFoundException {
+        JSONArray expected = new JSONArray();
+        for(int i = testBooks.size()-1; i >= 0; i--){
+            JSONObject bookJson = new JSONObject();
+            bookJson.put("title", testBooks.get(i).getTitle());
+            expected.put(bookJson);
+        }
+
+        JSONArray actual = connector.getTitles().getJSONArray("response");
+
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+    }
 }
