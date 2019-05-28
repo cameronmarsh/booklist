@@ -1,6 +1,8 @@
 package com.booklist;
 
 import cucumber.api.java8.En;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.util.Scanner;
 
@@ -20,9 +22,9 @@ public class ViewAllTitlesStepDefs implements En {
             }
         });
 
-        String expectedResponse = "{\"response\":[{\"read\":false,\"author\":\"Henry David Thoreau\",\"published\":\"1854-08-09\",\"title\":\"Walden\"},{\"read\":false,\"author\":\"William Faulkner\",\"published\":\"1929-04-21\",\"title\":\"The Sound and the Fury\"},{\"read\":false,\"author\":\"Karl Ove Knausgaard\",\"published\":\"2009-01-01\",\"title\":\"My Struggle\"},{\"read\":false,\"author\":\"Marcel Proust\",\"published\":\"1913-01-01\",\"title\":\"In Search of Lost Time\"},{\"read\":false,\"author\":\"Alexandre Dumas\",\"published\":\"1844-08-24\",\"title\":\"The Count of Monte Cristo\"}]}";
+        String expectedResponse = "{\"response\":[{\"title\":\"Walden\"},{\"title\":\"The Sound and the Fury\"},{\"title\":\"My Struggle\"},{\"title\": \"In Search of Lost Time\"},{\"title\":\"The Count of Monte Cristo\"}]}";
         Then("^a list of all books saved is returned$", () -> {
-            assertEquals(expectedResponse, response);
+            JSONAssert.assertEquals(expectedResponse, response, JSONCompareMode.NON_EXTENSIBLE);
         });
     }
 }

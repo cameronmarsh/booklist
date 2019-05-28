@@ -18,15 +18,14 @@ allprojects {
         testCompile 'org.assertj:assertj-core:3.8.0'
         testCompile 'io.cucumber:cucumber-java8:4.2.0'
         testCompile 'io.cucumber:cucumber-junit:4.2.0'
-        // https://mvnrepository.com/artifact/org.dbunit/dbunit
-        testCompile group: 'org.dbunit', name: 'dbunit', version: '2.4.3'
         // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
         compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
+        compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
         // https://mvnrepository.com/artifact/org.skyscreamer/jsonassert
         testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
-
+        // https://mvnrepository.com/artifact/org.json/json
+        compile group: 'org.json', name: 'json', version: '20180813'
 
     }
     test { finalizedBy jacocoTestReport }
@@ -61,11 +60,11 @@ configurations {
         extendsFrom testRuntime
     }
 
-    integrationTestCompile{
+    integrationTestCompile {
         extendsFrom testCompile
     }
 
-    integrationTestRuntime{
+    integrationTestRuntime {
         extendsFrom testRuntime
     }
 }
@@ -84,7 +83,7 @@ task cucumber() {
 task integrationTest(type: Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
-    outputs.upToDateWhen{false}
+    outputs.upToDateWhen { false }
 
 }
 

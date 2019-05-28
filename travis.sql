@@ -1,23 +1,24 @@
-# create test user
-CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev';
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'dev'@'localhost';
+-- # create test user
+-- CREATE USER 'reader'@'localhost' IDENTIFIED BY 'mysqlsux';
+-- GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'reader'@'localhost';
 
-# Create DB
-CREATE DATABASE IF NOT EXISTS `books` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `books`;
+-- # Create DB
+CREATE DATABASE IF NOT EXISTS books DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE books;
 
-# Create Table
-CREATE TABLE IF NOT EXISTS `test` (
-`title` varchar(50) NOT NULL,
-`author` varchar(50),
-`published` date,
-`read` boolean,
-)
+-- # Create Table
+CREATE TABLE IF NOT EXISTS test (
+title varchar(50) NOT NULL,
+author varchar(50),
+published date,
+done boolean,
+PRIMARY KEY(title)
+);
 
-ALTER TABLE `test` ADD PRIMARY KEY (`title`);
+-- ALTER TABLE test ADD PRIMARY KEY (title);
 
-# Insert test cases into table if they do not exist
-REPLACE INTO `test`
+-- # Insert test cases into table if they do not exist
+REPLACE INTO test
     (title, author, published, done)
     VALUES
     ('In Search of Lost Time', 'Marcel Proust', '1890-06-24', 1),

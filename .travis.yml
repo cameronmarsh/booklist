@@ -9,3 +9,9 @@ jdk:
 
 services:
   - mysql
+
+script:
+  - ./gradlew check -i
+
+before_install:
+  - mysql -u root < travis.sql

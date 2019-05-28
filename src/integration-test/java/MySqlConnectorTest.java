@@ -4,7 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -39,15 +38,6 @@ public class MySqlConnectorTest {
     @After
     public void tearDown() throws Exception {
         connector.removeBookTable("dev");
-    }
-
-    @Test
-    @Ignore
-    public void returnsNullWhenNoTableExists() throws SQLException, ClassNotFoundException, JSONException {
-        connector.setTable("doesNotExist");
-        JSONObject actual = connector.getAllBooks();
-
-        assertNull(actual);
     }
 
     @Test
@@ -92,7 +82,7 @@ public class MySqlConnectorTest {
             bookJson.put("title", testBooks.get(i).getTitle());
             bookJson.put("author", testBooks.get(i).getAuthor());
             bookJson.put("published", testBooks.get(i).getPublished());
-            bookJson.put("read", false); //TODO: make this correspond to the book
+            bookJson.put("read", testBooks.get(i).isRead());
             expected.put(bookJson);
         }
 

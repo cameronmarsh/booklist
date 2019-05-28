@@ -18,6 +18,7 @@ public class BookParser extends Parser {
             bookResult.setTitle(resultSet.getString("title"));
             bookResult.setAuthor(resultSet.getString("author"));
             bookResult.setPublished(resultSet.getString("published"));
+            bookResult.setRead(resultSet.getBoolean("done"));
             bookResults.add(bookResult);
         }
         return toJsonResponse(bookResults);

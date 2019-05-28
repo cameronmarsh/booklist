@@ -2,8 +2,6 @@ package model;
 
 import org.json.simple.JSONObject;
 
-import java.text.SimpleDateFormat;
-
 public class Book {
     private String title;
     private String author;
