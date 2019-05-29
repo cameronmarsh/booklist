@@ -2,15 +2,6 @@
 
 ## Persona: John Johnson
 
-
-### Goal: Create new user account
-<u>Activity: Create new login information</u>
-* As John, I want to click the "Create Account" button inorder to make a new user account I can use to log in
-* As John, I want to provide a username and password in order to log in to the application using an account that is unique to me
-
-### Goal: Log in to user account
-
-
 ### Goal: Construct list of books
 <u>Activity: Add new book to read list</u>
 * As John, I want to click on the "Read" tab in order to add view a list of the books I've read

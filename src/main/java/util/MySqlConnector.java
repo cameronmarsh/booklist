@@ -1,8 +1,10 @@
 package util;
 
-import model.Book;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import model.BookParser;
+import model.Parser;
+import model.SingleColumnParser;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,8 +12,8 @@ import java.util.List;
 
 public class MySqlConnector {
     static final String URL = "jdbc:mysql://localhost/books?serverTimezone=EST";
-    static final String USER = "reader";
-    static final String PASSWORD = "mysqlsux";
+    static final String USER = "root";
+    static final String PASSWORD = null;
     private String table;
 
 
@@ -20,72 +22,6 @@ public class MySqlConnector {
 
     public MySqlConnector(String table) {
         this.table = table;
-    }
-
-    private Connection getConnection() throws SQLException, ClassNotFoundException {
-        //Register JDBC Driver
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        //Open connection to database
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-
-    private ResultSet query(String query) throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        Statement statement = connection.createStatement();
-
-        ResultSet resultSet = statement.executeQuery(query);
-        statement.close();
-        connection.close();
-
-        return resultSet;
-    }
-
-
-    public int update(String statment) throws SQLException, ClassNotFoundException {
-        Connection connection = getConnection();
-        Statement statement = connection.createStatement();
-
-        int result = statement.executeUpdate(statment);
-
-        statement.close();
-        connection.close();
-
-        return result;
-    }
-
-
-    public List<Book> select(String selection) throws SQLException, ClassNotFoundException {
-        if (this.table == null)
-            return null;
-
-        ArrayList<Book> results = new ArrayList<>();
-        ResultSet res = query("select " + selection + " from " + this.table + ";");
-
-        //extract data from result set
-        while (res.next()) {
-            Book book = new Book();
-            book.setTitle(res.getString("title"));
-            book.setAuthor(res.getString("author"));
-            book.setPublished(res.getDate("published"));
-            book.setRead(res.getBoolean("read"));
-
-            results.add(book);
-        }
-
-        return results;
-    }
-
-
-    private static String getJsonResponse(List<Book> results) {
-        JSONArray books = new JSONArray();
-        for (Book book : results) {
-            books.add(book.asJson());
-        }
-
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("response", books);
-        return jsonResponse.toJSONString();
     }
 
     public void setTable(String tableName) {
@@ -98,9 +34,88 @@ public class MySqlConnector {
                 " (title varchar(100) NOT NULL, " +
                 "author varchar(50), " +
                 "published DATE," +
-//                "read BOOLEAN, " +
+                "done BOOLEAN not null, " +
                 "PRIMARY KEY (title))";
 
         update(sqlQuery);
+    }
+
+    public void removeBookTable(String tableName) throws SQLException, ClassNotFoundException {
+        update("DROP table " + tableName + ";");
+    }
+
+
+    public void addBook(String title, String author, String datePublished, boolean read) throws SQLException, ClassNotFoundException {
+        update("INSERT INTO " + this.table + "(title, author, published, done)" +
+                " VALUES (\"" + title + "\",\"" + author + "\",\"" + datePublished + "\"," + read + ")");
+    }
+
+
+    public JSONObject getAllBooks() throws SQLException, ClassNotFoundException, JSONException {
+        return select("*", new BookParser());
+    }
+
+
+    public JSONObject getTitles() throws SQLException, JSONException, ClassNotFoundException {
+        return select("title", new SingleColumnParser("title"));
+    }
+
+    //TODO: refactor these to adhere to DRY
+    public List<String> getTables() throws SQLException, ClassNotFoundException {
+        Connection conn = getConnection();
+        Statement statement = conn.createStatement();
+        List<String> tables = new ArrayList<>();
+
+        ResultSet resultSet = statement.executeQuery("show tables;");
+        while(resultSet.next()){
+            tables.add(resultSet.getString(1));
+        }
+
+        return tables;
+
+    }
+
+
+    private JSONObject query(String query, Parser parser) throws SQLException, ClassNotFoundException, JSONException {
+        Connection connection = getConnection();
+        Statement statement = connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery(query);
+        JSONObject results = parser.parse(resultSet);
+
+        statement.close();
+        connection.close();
+
+        return results;
+    }
+
+
+    private int update(String query) throws SQLException, ClassNotFoundException {
+        Connection connection = getConnection();
+        Statement statement = connection.createStatement();
+
+        int result = statement.executeUpdate(query);
+
+        statement.close();
+        connection.close();
+
+        return result;
+    }
+
+
+    private JSONObject select(String selection, Parser parser) throws SQLException, ClassNotFoundException, JSONException {
+        if (this.table == null)
+            return null;
+
+        return query("select " + selection + " from " + this.table + ";", parser);
+    }
+
+
+    private Connection getConnection() throws SQLException, ClassNotFoundException {
+        //Register JDBC Driver
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        //Open connection to database
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
