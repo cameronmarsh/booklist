@@ -52,13 +52,22 @@ public class MySqlConnector {
 
 
     public JSONObject getAllBooks() throws SQLException, ClassNotFoundException, JSONException {
-        return select("*", new BookParser());
+        return select("*", "", new BookParser());
     }
 
 
     public JSONObject getTitles() throws SQLException, JSONException, ClassNotFoundException {
-        return select("title", new SingleColumnParser("title"));
+        return select("title", "", new SingleColumnParser("title"));
     }
+
+    public JSONObject getReadBooks() throws SQLException, ClassNotFoundException {
+        return select("*", "WHERE done = 1", new BookParser());
+    }
+
+    public JSONObject getUnreadBooks() throws SQLException, ClassNotFoundException {
+        return select("*", "WHERE done = 0", new BookParser());
+    }
+
 
     //TODO: refactor these to adhere to DRY
     public List<String> getTables() throws SQLException, ClassNotFoundException {
@@ -103,13 +112,12 @@ public class MySqlConnector {
     }
 
 
-    private JSONObject select(String selection, Parser parser) throws SQLException, ClassNotFoundException, JSONException {
+    private JSONObject select(String selection, String filter, Parser parser) throws SQLException, ClassNotFoundException, JSONException {
         if (this.table == null)
             return null;
 
-        return query("select " + selection + " from " + this.table + ";", parser);
+        return query("select " + selection + " from " + this.table + " " + filter + ";", parser);
     }
-
 
     private Connection getConnection() throws SQLException, ClassNotFoundException {
         //Register JDBC Driver
@@ -118,4 +126,6 @@ public class MySqlConnector {
         //Open connection to database
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
+
+
 }

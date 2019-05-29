@@ -104,4 +104,19 @@ public class MySqlConnectorTest {
 
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
     }
+
+    @Test
+    public void canQueryDatabaseWithFilter() throws SQLException, ClassNotFoundException {
+        JSONArray expected = new JSONArray();
+        JSONObject readBook = new JSONObject()
+                .put("title", "Walden")
+                .put("author", "Henry David Thoreau")
+                .put("published", "1854-08-09")
+                .put("read", true);
+        expected.put(readBook);
+
+        JSONArray actual = connector.getReadBooks().getJSONArray("response");
+
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+    }
 }

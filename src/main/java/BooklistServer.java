@@ -17,7 +17,8 @@ public class BooklistServer {
         });
 
         get("/books", (req, res) -> connector.getAllBooks());
-
+        get("/books/read", (req, res) -> connector.getReadBooks());
+        get("/books/unread", (req, res) -> connector.getUnreadBooks());
         get("/titles", (req, res) -> connector.getTitles());
 
     }
