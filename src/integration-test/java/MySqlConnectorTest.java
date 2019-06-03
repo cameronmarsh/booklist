@@ -29,7 +29,7 @@ public class MySqlConnectorTest {
         testBooks.add(new Book("The Sound and the Fury", "William Faulkner", "1929-04-21", false));
 
         connector.setTable("dev");
-        for(Book book : testBooks){
+        for (Book book : testBooks) {
             connector.addBook(book.getTitle(), book.getAuthor(), book.getPublished(), book.isRead());
         }
 
@@ -77,7 +77,7 @@ public class MySqlConnectorTest {
     @Test
     public void canQueryBookDataFromDatabase() throws SQLException, ClassNotFoundException, JSONException {
         JSONArray expected = new JSONArray();
-        for(int i = testBooks.size()-1; i >= 0; i--){
+        for (int i = testBooks.size() - 1; i >= 0; i--) {
             JSONObject bookJson = new JSONObject();
             bookJson.put("title", testBooks.get(i).getTitle());
             bookJson.put("author", testBooks.get(i).getAuthor());
@@ -94,7 +94,7 @@ public class MySqlConnectorTest {
     @Test
     public void canQuerySingleFieldFromDatabase() throws JSONException, SQLException, ClassNotFoundException {
         JSONArray expected = new JSONArray();
-        for(int i = testBooks.size()-1; i >= 0; i--){
+        for (int i = testBooks.size() - 1; i >= 0; i--) {
             JSONObject bookJson = new JSONObject();
             bookJson.put("title", testBooks.get(i).getTitle());
             expected.put(bookJson);
@@ -118,5 +118,19 @@ public class MySqlConnectorTest {
         JSONArray actual = connector.getReadBooks().getJSONArray("response");
 
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.NON_EXTENSIBLE);
+    }
+
+
+    @Test
+    public void canRemoveBookFromDatabase() throws SQLException, ClassNotFoundException {
+        JSONArray expected = new JSONArray();
+        JSONObject onlyBookInDb = testBooks.get(1).asJson();
+        expected.put(onlyBookInDb);
+
+        connector.removeBook("Walden");
+        JSONArray remainingBooks = connector.getAllBooks().getJSONArray("response");
+
+        JSONAssert.assertEquals(expected, remainingBooks, JSONCompareMode.NON_EXTENSIBLE);
+
     }
 }

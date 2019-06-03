@@ -1,6 +1,6 @@
 package model;
 
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 public class Book {
     private String title;
@@ -56,7 +56,7 @@ public class Book {
         JSONObject bookJson = new JSONObject();
         bookJson.put("title", this.title);
         bookJson.put("author", this.author);
-        bookJson.put("published", this.published.toString());
+        bookJson.put("published", this.published);
         bookJson.put("read", this.read);
 
         return bookJson;

@@ -51,6 +51,11 @@ public class MySqlConnector {
     }
 
 
+    public void removeBook(String title) throws SQLException, ClassNotFoundException {
+        update("DELETE from " + this.table + " WHERE title = \"" + title + "\";");
+    }
+
+
     public JSONObject getAllBooks() throws SQLException, ClassNotFoundException, JSONException {
         return select("*", "", new BookParser());
     }
