@@ -25,7 +25,13 @@ public class HttpUtil {
 
     public static int removeBook(String title) throws IOException {
         String url = "http://localhost:8769/books/remove";
+        String urlParams = "title=" + title;
 
+        return post(url, urlParams);
+    }
+
+    public static int markAsRead(String title) throws IOException {
+        String url = "http://localhost:8769/books/markRead";
         String urlParams = "title=" + title;
 
         return post(url, urlParams);
@@ -47,6 +53,5 @@ public class HttpUtil {
 
         return conn.getResponseCode();
     }
-
 
 }

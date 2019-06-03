@@ -73,6 +73,9 @@ public class MySqlConnector {
         return select("*", "WHERE done = 0", new BookParser());
     }
 
+    public void markAsRead(String title) throws SQLException, ClassNotFoundException {
+        update("UPDATE " + this.table + " SET done=1 WHERE title=\"" + title + "\";");
+    }
 
     //TODO: refactor these to adhere to DRY
     public List<String> getTables() throws SQLException, ClassNotFoundException {
@@ -131,6 +134,7 @@ public class MySqlConnector {
         //Open connection to database
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
+
 
 
 }

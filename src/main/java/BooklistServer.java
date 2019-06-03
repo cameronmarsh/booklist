@@ -40,5 +40,12 @@ public class BooklistServer {
             return connector.getAllBooks();
         });
 
+        post("/books/markRead", (req, res) -> {
+            connector.markAsRead(req.queryParams("title"));
+
+            res.redirect("/books");
+            return connector.getAllBooks();
+        });
+
     }
 }
